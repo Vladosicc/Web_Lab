@@ -5,9 +5,11 @@ const { loadavg } = require("os");
 
 const router = app => {
     app.get('/', (request, response) => {
-        response.writeHead(200, {'Content-Type': 'text/html'});
-        var myReadStream = fs.createReadStream(__dirname +'/info/index.html', 'utf8');
-        myReadStream.pipe(response);
+        response.sendFile(__dirname +'/info/index.html', 'utf8');
+    });
+
+    app.get('/test', (request, response) => {
+        response.sendFile(__dirname + '/proc/test.html', 'utf8');
     });
 
     app.get('/dis', (request, response) => {
