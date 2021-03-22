@@ -5,135 +5,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lab1 Site</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.css" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="./script.js"></script>
 </head>
 
-<body class="body" onload="getajax()">
+<body class="body">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <!-- Navbar content -->
     <div class="container-fluid">
           <a class="navbar-brand" href="index.html">
-        <img src="brandpng.png" alt="картинка" width="30" height="24" class="d-inline-block align-top">
-        API
+        <img src="brandgif.gif" alt="картинка" width="30" height="24" class="d-inline-block align-top">
+        GIF
       </a>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
+          </li>
+          <li class="nav-item" style="margin: 7px 5px 0 5px;">
+              <select class="form-select" id="language">
+                <option value="en">en</option>
+                <option selected value="ru">ru</option>
+                <option value="de">de</option>
+                <option value="fr">fr</option>
+                <option value="es">es</option>
+                <option value="it">it</option>
+                <option value="ja">ja</option>
+              </select>
+          </li>
           <li class="nav-item">
-            <a class="nav-link" href="https://stankinlab-api.herokuapp.com/">Документация к API</a>
+            <a class="nav-link" href="https://developers.giphy.com/docs/api#quick-start-guide">Документация к API</a>
           </li>
         </ul>
       </div>
+      <form class="d-flex" onsubmit="return false">
+        <input class="form-control me-2" id="q">
+        <button class="btn btn-outline-success" onclick="start()">Search</button>
+      </form>
     </div>
   </nav>
-  <h1 class="display-3 text-center">Тест API</h1>
-  <h1 class="display-4 text-center">Выбери метод, заполни поля и нажми на кнопку</h1>
-  <h1 class="display-5 text-center">Сервер на node.js задеплоин на heroku и доступен по ссылке <br>https://stankinlab-api.herokuapp.com/</h1>
-  <h1 class="display-5 text-center">Данные взяты с бота в дискорде</h1>
-  <div style="margin-left: 10%; margin-right: 10%; margin-top: 30px;">
-  <div class="input-group mb-3">
-    <label class="input-group-text" for="inputGroupSelect01">Methods</label>
-    <select class="form-select" id="methods" onchange="methodChanged()">
-      <option selected value="1">GET</option>
-      <option value="2">POST</option>
-      <option value="3">PUT</option>
-      <option value="4">DELETE</option>
-    </select>
+  <h1 class="display-3 text-center">Привет, тут можно найти гифку</h1>
+  <h1 class="display-4 text-center">Выбирай язык, напиши запрос по которому искать гифку и жми Search</h1>
+  <div class="lead text-center" style="font-size: xx-large;">
+    <label class="form-label" style="margin: auto; text-align: center;">Количество гифок на 1 странице</label>
+    <input type="range" class="form-range" min="0" max="20" step="1" id="range" onchange="rangeChange()">
+    <label class="form-label" id="rangeCount">10</label>
+    <p><button type="button" class="btn btn-secondary" style="display: none;" id="btnnext" onclick="test1()">Другие</button></p>
   </div>
-
-  <div id="formGet">
-    <div class="form-floating mb-3">
-      <input type="number" class="form-control" id="UserIdGET" placeholder="1">
-      <label for="UserIdGET">User Id</label>
-    </div>
-    <div class="form-floating mb-3" style="text-align: center;">
-      <button class="btn btn-success" style="text-align: center;" onclick="getajax()">GET</button>
-    </div>
+  <div class="alert alert-danger text-center" id="error" style="display: none;">
+    По запросу ничего не найдено
   </div>
+  <div id="images">
 
-  <div id="formPost" style="display: none;">
-    <div class="form-floating mb-3 required">
-      <input type="number" class="form-control required is-invalid" id="UserIdPOST" placeholder="1">
-      <label for="UserIdPOST">User Id</label>
-    </div>
-    <div class="form-floating mb-3">
-      <input type="text" class="form-control" id="NickNamePOST" placeholder="1">
-      <label for="NickNamePOST">NickName</label>
-    </div>
-    <div class="form-floating mb-3">
-      <input type="text" class="form-control" id="GuildNickNamePOST" placeholder="1">
-      <label for="GuildNickNamePOST">GuildNickName</label>
-    </div>
-    <div class="input-group mb-3">
-      <div class="input-group-text">
-        <input class="form-check-input" type="checkbox" value="" id="IsBotPOST">
-        <span class="input-group-text"> IsBot</span>
-      </div>
-    </div>
-    <div class="form-floating mb-3">
-      <input type="text" class="form-control" id="AvatarUrlPOST" placeholder="1">
-      <label for="AvatarUrlPOST">AvatarUrl</label>
-    </div>
-    <div class="form-floating mb-3" style="text-align: center;">
-      <button class="btn btn-success" style="text-align: center;" onclick="postajax()">POST</button>
-    </div>
-  </div>
-
-  <div id="formPut" style="display: none;">
-    <div class="form-floating mb-3">
-      <input type="number" class="form-control is-invalid" id="UserIdPUT" placeholder="1">
-      <label for="UserIdPUT">User Id</label>
-    </div>
-    <div class="form-floating mb-3">
-      <input type="text" class="form-control" id="NickNamePUT" placeholder="1">
-      <label for="NickNamePUT">NickName</label>
-    </div>
-    <div class="form-floating mb-3">
-      <input type="text" class="form-control" id="GuildNickNamePUT" placeholder="1">
-      <label for="GuildNickNamePUT">GuildNickName</label>
-    </div>
-    <div class="input-group mb-3">
-      <div class="input-group-text">
-        <input class="form-check-input" type="checkbox" value="" id="IsBotPUT">
-        <span class="input-group-text"> IsBot</span>
-      </div>
-    </div>
-    <div class="form-floating mb-3">
-      <input type="text" class="form-control" id="AvatarUrlPUT" placeholder="1">
-      <label for="AvatarUrlPUT">AvatarUrl</label>
-    </div>
-    <div class="form-floating mb-3" style="text-align: center;">
-      <button class="btn btn-success" style="text-align: center;" onclick="putajax()">PUT</button>
-    </div>
-  </div>
-
-  <div id="formDelete" style="display: none;">
-    <div class="form-floating mb-3">
-      <input type="number" class="form-control" id="UserIdDELETE" placeholder="1">
-      <label for="UserIdGET">User Id</label>
-    </div>
-    <div class="form-floating mb-3" style="text-align: center;">
-      <button class="btn btn-success" style="text-align: center;" onclick="deleteajax()">DELETE</button>
-    </div>
-  </div>
-
-  <div>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">id</th>
-        <th scope="col">Nick</th>
-        <th scope="col">GNick</th>
-        <th scope="col">IsBot</th>
-        <th scope="col">AvtrUrl</th>
-      </tr>
-    </thead>
-    <tbody id="table">
-      
-    </tbody>
-  </table>
   </div>
 
 </body>
