@@ -45,7 +45,11 @@
               td.innerHTML = msg.data[i].IsBot;
               tr.appendChild(td);
               td = document.createElement("td");
-              td.innerHTML = msg.data[i].AvatarUrl;
+              img1 = document.createElement("img");
+              img1.src = msg.data[i].AvatarUrl;
+              img1.width = 200;
+              img1.height = 200;
+              td.appendChild(img1);
               tr.appendChild(td);
               document.getElementById('table').appendChild(tr);
               i++;
