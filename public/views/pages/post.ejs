@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>postajax</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <style>
+      body {
+       background-color: #fafafa;
+       font-family: Consolas;
+       font-size: 18px;
+       color:#2A2A2A;
+      }
+      .container {
+       margin: 10px 40px;
+      }
+     </style>
+     <link rel="stylesheet" href="../styles/nav.css">
+     <script src="../scripts/navbarloginscript.js"></script>
+</head>
+
+<body>
+  <%- include('../navbar/nav.ejs', { user: user }); %>
+  <div class="container">
+  <h1>POST</h1>
+  <h3>example</h3>
+
+  <p>function postajax()
+  <br>  {
+    <br>   console.log("POST");
+    <br>  $.ajax({
+        <br>   type: "POST",
+        <br>  url: "http://localhost:3000/dis",
+        <br>data: "UserId=286841271463444480&NickName=Mektus&GuildName=Mektus&IsBot=false&AvatarUrl=https://cdn.discordapp.com/avatars/286841271463444480/6ff0be424b3bd1c3e3e6e2e5c9b5f6c0.png?size=1024",
+        <br>success: function(msg){
+            <br>  console.log(msg);
+            <br>}
+            <br>});
+            <br>}
+  </p>
+
+  <h3>processing</h3>
+
+  <p><br>app.post('/dis', (request, response) => {
+    <br>try
+    <br>{
+        <br>var item = {UserId:parseInt(request.body.UserId), NickName:request.body.NickName, GuildName:request.body.GuildName, IsBot:parseBool(request.body.IsBot), AvatarUrl:request.body.AvatarUrl};
+        <br>if(file.data.findIndex(i => i.UserId == item.UserId) != -1)
+        <br>{
+          <br>response.status(400).send("id already exists");
+          <br>return;
+          <br>}
+        <br>file.data.push(item);
+                <br>pushToJson();
+                <br>response.status(201).send('User added');
+                <br>}
+                <br>catch
+                <br>{
+                    <br>response.send("error");
+                    <br>}
+                    <br>});
+</p>
+
+  </div>
+ </body>
+ </html>

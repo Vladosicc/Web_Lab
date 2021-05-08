@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab1 Site</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <link rel="stylesheet" href="../styles/nav.css">
+
+    <script>
+      const connect = "http://localhost:3000/signup/";
+
+      function showPassword(target)
+      {
+        var input = document.getElementById('password');
+	      if (input.getAttribute('type') == 'password') {
+		      target.classList.add('view');
+		      input.setAttribute('type', 'text');
+	      } 
+        else {
+		      target.classList.remove('view');
+		      input.setAttribute('type', 'password');
+	      }
+	      return false;
+      }
+
+      function showPasswordConfirm(target)
+      {
+        var input = document.getElementById('passwordconfirm');
+	      if (input.getAttribute('type') == 'password') {
+		      target.classList.add('view');
+		      input.setAttribute('type', 'text');
+	      } 
+        else {
+		      target.classList.remove('view');
+		      input.setAttribute('type', 'password');
+	      }
+	      return false;
+      }
+
+      function checkPass(target)
+      {
+        var r=/[^a-zA-Z0-9-_]+/;
+        var passValid = document.getElementById("passValid");
+        var passConfirmValid = document.getElementById("passConfirmValid");
+        if(r.test(target.value))
+        {
+          passValid.innerHTML = 'Запрещенный символ';
+          passValid.classList.remove('valid-feedback');
+          passValid.classList.add('invalid-feedback');
+          return;
+        }
+        if(target.value.length < 8)
+        {
+          passConfirmValid.innerHTML = 'Пароль короче 8 символов';
+          passConfirmValid.classList.remove('valid-feedback');
+          passConfirmValid.classList.add('invalid-feedback');
+          passValid.innerHTML = 'Пароль короче 8 символов';
+          passValid.classList.add('invalid-feedback');
+          passValid.classList.remove('valid-feedback');
+          return;
+        }
+        if(target.value != document.getElementById('password').value)
+        {
+          passConfirmValid.innerHTML = 'Пароли не совпадают';
+          passConfirmValid.classList.remove('valid-feedback');
+          passConfirmValid.classList.add('invalid-feedback');
+          return;
+        }
+        if(target.value != document.getElementById('passwordconfirm').value)
+        {
+          passConfirmValid.innerHTML = 'Пароли не совпадают';
+          passConfirmValid.classList.remove('valid-feedback');
+          passConfirmValid.classList.add('invalid-feedback');
+          return;
+        }
+        passValid.classList.add('valid-feedback');
+        passValid.classList.remove('invalid-feedback');
+        passValid.innerHTML = 'Все хорошо';
+        passConfirmValid.classList.add('valid-feedback');
+        passConfirmValid.classList.remove('invalid-feedback');
+        passConfirmValid.innerHTML = 'Все хорошо';
+      }
+
+    function postregistration()
+    {
+      console.log("POST");
+      checkPass(document.getElementById('password'));
+      if(document.getElementById('passValid').classList.contains('invalid-feedback') || document.getElementById('passConfirmValid').classList.contains('invalid-feedback') || document.getElementById('emailinput').value == "")
+      {
+        return;
+      }
+      $.ajax({
+        type: "POST",
+        url: connect,
+        data: "email="+ document.getElementById('emailinput').value + "&password=" + document.getElementById('password').value+ "&name=" + document.getElementById('nameinput').value,
+        success: function(msg){
+          if(msg.status == 200)
+          {
+            window.location.replace(msg.redirect);
+          }
+        }
+      });
+    }
+    </script>
+    <link rel="stylesheet" href="../styles/nav.css">
+
+<script src="../scripts/navbarloginscript.js"></script>
+
+</head>
+<%- include('../navbar/nav.ejs', { user: user }); %>
+
+<div style="margin-left: 20%; margin-right: 20%; margin-top: 30px;">
+  <div>
+    <div class="mb-3">
+      <label for="emailinput" class="form-label">Email address*</label>
+      <input type="email" class="form-control" id="emailinput" aria-describedby="emailHelp">
+      <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+    </div>
+    <div class="mb-3">
+      <label for="nameinput" class="form-label">Name</label>
+      <input type="name" class="form-control" id="nameinput" aria-describedby="nameinput">
+      <div id="nameinput" class="form-text">We'll never share your email with anyone else.</div>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password*</label>
+      <div style="position: relative;">
+        <input type="password" class="form-control" id="password" onkeyup="checkPass(this);">
+        <a href="#" class="password-control" onclick="return showPassword(this);"></a>
+      </div>
+      <div class="valid-feedback" style="display: inline;" id="passValid">
+        
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="passwordconfirm" class="form-label">Password Confirm*</label>
+      <div style="position: relative;">
+        <input type="password" class="form-control" id="passwordconfirm" onkeyup="checkPass(this);">
+        <a href="#" class="password-control" onclick="return showPasswordConfirm(this);"></a>
+      </div>
+      <div class="valid-feedback" style="display: inline;" id="passConfirmValid">
+
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary" onclick="postregistration()">Sign up</button>
+  </div>
+</div>
+
+</body>
+
+</html>
