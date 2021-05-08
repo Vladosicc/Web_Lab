@@ -14,3 +14,5 @@
 Сервер на node.js задеплоин на heroku и доступен по ссылке.
 https://stankinlab-api.herokuapp.com/
 
+Если тестить локально, надо вставить url на mongodb (./config/db.js)
+
